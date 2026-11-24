@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+    <title>{{ config('app.name', 'Store') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,6 +20,7 @@
             margin: 0;
             padding: 0;
             display: flex;
+            align-items: center;
         }
         .navbar li {
             margin-right: 1rem;
@@ -30,76 +29,43 @@
             color: #fff;
             text-decoration: none;
         }
+        .navbar .spacer {
+            margin-left: auto;
+        }
         .main-content {
             padding: 2rem;
         }
         .hero {
             position: relative;
             height: 400px;
-            /* background-image: linear-gradient(240deg, #ffff00, #9b0303);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent; */
             padding: 2rem;
             text-align: center;
         }
-
-        @property --angle {
-            syntax: "<angle>";
-            initial-value: 0deg;
-            inherits: false;
-        }
-
-        .hero-content p , .hero-content h1 {
+        .hero-content p, .hero-content h1 {
             font-size: 2rem;
             font-weight: bold;
-            background: linear-gradient(
-            90deg,
-            #ff8000,
-            #d01500,
-            #f6f8f9
-            );
+            background: linear-gradient(90deg, #ff8000, #d01500, #f6f8f9);
             background-size: 300% 100%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             -webkit-text-fill-color: transparent;
         }
-
-        .hero-content p:hover , .hero-content h1:hover {
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(
-            90deg,
-            #ff8000,
-            #d01500,
-            #f6f8f9
-            );
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
+        .hero-content p:hover, .hero-content h1:hover {
             animation: wave-gradient 4s ease-in-out infinite alternate;
-
         }
-
         @keyframes wave-gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-        100% {
-                background-position: 100% 50%;
-            }
-        }    
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
         .hero-content img {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;  /* Works just like background-size: cover */
-            z-index: -1;        /* Sends the image behind the text */
+            object-fit: cover;
+            z-index: -1;
         }
         .hero-content .btn {
             display: inline-block;
@@ -110,16 +76,14 @@
             text-decoration: none;
             border-radius: 4px;
         }
-
         .hero-content .btn:hover {
             background: linear-gradient(75deg, #ff6600, #bc6501, #9a9500);
         }
-
-
         .features {
             display: flex;
             justify-content: space-around;
             margin-top: 2rem;
+            gap: 1rem;
         }
         .feature {
             width: 30%;
@@ -132,15 +96,31 @@
         }
         .product-list {
             display: flex;
-            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: flex-start;
         }
         .product {
             width: 30%;
             background-color: #eaeaea;
             padding: 1rem;
             text-align: center;
+            box-sizing: border-box;
         }
-
+        .product img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .product .price {
+            font-weight: bold;
+            color: #d01500;
+        }
+        .empty {
+            color: #666;
+            font-style: italic;
+        }
         .contact {
             margin-top: 2rem;
         }
@@ -149,11 +129,11 @@
             color: #fff;
             text-align: center;
             padding: 1rem;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            margin-top: 2rem;
         }
     </style>
+</head>
+<body>
     <header class="header">
         <nav class="navbar">
             <ul>
@@ -161,19 +141,27 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li class="spacer"></li>
+                @auth
+                    <li><a href="{{ route('dashboard') }}">Admin Panel</a></li>
+                @else
+                    <li><a href="{{ route('login') }}">Admin Login</a></li>
+                @endauth
             </ul>
         </nav>
     </header>
+
     <main class="main-content">
-        <section class="hero">
+        <section class="hero" id="home">
             <div class="hero-content">
-                <img src="images\hero-img.png" alt="Hero Image">
+                <img src="{{ asset('images/hero-img.png') }}" alt="Hero Image">
                 <h1>Welcome to Our Website</h1>
                 <p>This is a sample hero section with some introductory text.</p>
-                <a href="#" class="btn">Learn More</a>
+                <a href="#products" class="btn">Learn More</a>
             </div>
         </section>
-        <section class="features">
+
+        <section class="features" id="services">
             <div class="feature">
                 <h2>Feature 1</h2>
                 <p>Description of feature 1.</p>
@@ -187,49 +175,37 @@
                 <p>Description of feature 3.</p>
             </div>
         </section>
-        <section class="products">
+
+        <section class="products" id="products">
             <h2>Our Products</h2>
             <p>Check out our latest products!</p>
-            <div class="product-list">
-                <div class="product">
-                    <h3>Product 1</h3>
-                    <img src="images\hero.jpeg" alt="Product 1" style="width: 100px; height: 100px;">
-                    <p>Description of product 1.</p>
+
+            @if ($products->isEmpty())
+                <p class="empty">No products yet. Please check back soon.</p>
+            @else
+                <div class="product-list">
+                    @foreach ($products as $product)
+                        <div class="product">
+                            <h3>{{ $product->name }}</h3>
+                            @if ($product->image)
+                                <img src="{{ \Storage::url($product->image) }}" alt="{{ $product->name }}">
+                            @endif
+                            <p>{{ $product->description }}</p>
+                            <p class="price">${{ number_format((float) $product->price, 2) }}</p>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="product">
-                    <h3>Product 2</h3>
-                    <img src="images/shirt2.png" alt="Product 2" style="width: 100px; height: 100px;">
-                    <p>Description of product 2.</p>
-                </div>
-                <div class="product">
-                    <h3>Product 3</h3>
-                    <img src="images/shirt3.png" alt="Product 3" style="width: 100px; height: 100px;">
-                    <p>Description of product 3.</p>
-                </div>
+            @endif
         </section>
-        <section class="contact">
+
+        <section class="contact" id="contact">
             <h2>Contact Us</h2>
-            <form action="#" method="post">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" required></textarea>
-                
-                <button type="submit">Send Message</button>
-            </form>
+            <p>This is a demo contact section.</p>
         </section>
-
     </main>
-    <footer class="footer">
-        <p>&copy; 2027 Your Company. All rights reserved.</p>   
 
+    <footer class="footer" id="about">
+        <p>&copy; {{ date('Y') }} Your Company. All rights reserved.</p>
     </footer>
-    <script>
-        // JavaScript code can be added here if needed for interactivity or functionality    
-    </script>
 </body>
 </html>
