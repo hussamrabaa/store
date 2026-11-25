@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        color-scheme: light;
+    }
+
+    html.dark {
+        color-scheme: dark;
+    }
+
+    [dir="rtl"] body {
+        font-family: 'Cairo', 'Figtree', ui-sans-serif, system-ui, sans-serif;
+    }
+}

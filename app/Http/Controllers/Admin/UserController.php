@@ -29,6 +29,12 @@ class UserController extends Controller
             'role' => ['required', Rule::in(['admin', 'editor', 'user'])],
         ]);
 
+        if ($request->user()->is($user) && $data['role'] !== $user->role) {
+            return redirect()
+                ->route('admin.users.index')
+                ->with('error', 'You cannot change your own role.');
+        }
+
         $user->update($data);
 
         return redirect()
@@ -36,9 +42,28 @@ class UserController extends Controller
             ->with('success', 'User updated successfully.');
     }
 
-    public function destroy(User $user)
+    public function updateRole(Request $request, User $user)
     {
-        if ($user->id === auth()->id()) {
+        $data = $request->validate([
+            'role' => ['required', Rule::in(['admin', 'editor', 'user'])],
+        ]);
+
+        if ($request->user()->is($user)) {
+            return redirect()
+                ->route('admin.users.index')
+                ->with('error', 'You cannot change your own role.');
+        }
+
+        $user->update(['role' => $data['role']]);
+
+        return redirect()
+            ->route('admin.users.index')
+            ->with('success', 'Role updated successfully.');
+    }
+
+    public function destroy(Request $request, User $user)
+    {
+        if ($request->user()->is($user)) {
             return redirect()
                 ->route('admin.users.index')
                 ->with('error', 'You cannot delete your own account.');
