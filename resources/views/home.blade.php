@@ -50,7 +50,9 @@
     </style>
 </head>
 <body class="font-sans text-slate-700 dark:text-slate-300 antialiased bg-white dark:bg-slate-950">
-    <div x-data="{ open: false }" class="min-h-screen flex flex-col">
+    <div id="bg-scene" class="pointer-events-none fixed inset-0 z-0" aria-hidden="true"></div>
+
+    <div x-data="{ open: false }" class="relative z-10 min-h-screen flex flex-col">
         <!-- Header -->
         <header class="sticky top-0 z-40 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl dark:border-slate-800/70 dark:bg-slate-950/80">
             <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -223,7 +225,7 @@
             </section>
 
             <!-- Features -->
-            <section id="services" class="border-t border-slate-100 bg-white py-16 dark:border-slate-800 dark:bg-slate-950 sm:py-24">
+            <section id="services" class="border-t border-slate-100 bg-white/80 py-16 dark:border-slate-800 dark:bg-slate-950/80 sm:py-24">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="mx-auto max-w-2xl text-center">
                         <span class="text-sm font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">{{ __('Why choose us') }}</span>
@@ -258,7 +260,7 @@
             </section>
 
             <!-- Products -->
-            <section id="products" class="bg-slate-50 py-16 dark:bg-slate-900 sm:py-24">
+            <section id="products" class="bg-slate-50/80 py-16 dark:bg-slate-900/80 sm:py-24">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
                         <div>
@@ -323,7 +325,7 @@
             </section>
 
             <!-- Contact -->
-            <section id="contact" class="bg-white py-16 dark:bg-slate-950 sm:py-24">
+            <section id="contact" class="bg-white/80 py-16 dark:bg-slate-950/80 sm:py-24">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 px-6 py-16 text-center shadow-2xl shadow-indigo-600/25 sm:px-16">
                         <div class="pointer-events-none absolute -left-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl"></div>
@@ -349,7 +351,7 @@
         </main>
 
         <!-- Footer -->
-        <footer id="about" class="border-t border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950">
+        <footer id="about" class="border-t border-slate-200 bg-slate-50/85 dark:border-slate-800 dark:bg-slate-950/85">
             <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <div class="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
                     <div class="max-w-sm">

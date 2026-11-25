@@ -55,7 +55,9 @@
     </style>
 </head>
 <body class="font-sans text-slate-700 dark:text-slate-300 antialiased bg-white dark:bg-slate-950">
-    <div class="min-h-screen flex flex-col">
+    <div id="bg-scene" class="pointer-events-none fixed inset-0 z-0" aria-hidden="true"></div>
+
+    <div class="relative z-10 min-h-screen flex flex-col">
         <!-- Announcement -->
         <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-4 py-2 text-center text-xs font-semibold tracking-wide text-white sm:text-sm">
             {{ __('Free shipping on all orders over $50 — 30-day easy returns') }}
@@ -104,7 +106,7 @@
             </div>
 
             <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
-                <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+                <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-20">
                     <!-- Gallery -->
                     <div class="animate-fade-up" x-data="{ zoom: false }">
                         <div class="group relative">
@@ -156,7 +158,7 @@
 
                     <!-- Details -->
                     <div class="animate-fade-up" style="animation-delay: 100ms;" x-data="{ qty: 1, saved: false }">
-                        <div class="lg:sticky lg:top-24">
+                        <div class="lg:sticky lg:top-24 lg:rounded-3xl lg:border lg:border-slate-200 lg:bg-white lg:p-8 lg:shadow-xl lg:shadow-slate-900/5 dark:lg:border-slate-800 dark:lg:bg-slate-900 dark:lg:shadow-black/40">
                             <span class="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-indigo-700 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300">
                                 <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
                                 {{ __('Premium collection') }}
@@ -322,7 +324,7 @@
             </section>
 
             @if ($related->isNotEmpty())
-                <section class="border-t border-slate-100 bg-slate-50 py-16 dark:border-slate-800 dark:bg-slate-900">
+                <section class="border-t border-slate-100 bg-slate-50/80 py-16 dark:border-slate-800 dark:bg-slate-900/80">
                     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div class="flex items-end justify-between gap-4">
                             <div>
@@ -362,7 +364,7 @@
         </main>
 
         <!-- Footer -->
-        <footer class="border-t border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950">
+        <footer class="border-t border-slate-200 bg-slate-50/85 dark:border-slate-800 dark:bg-slate-950/85">
             <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <div class="flex flex-col items-center justify-between gap-4 text-sm text-slate-500 dark:text-slate-500 sm:flex-row">
                     <p>&copy; {{ date('Y') }} {{ config('app.name', 'Store') }}. {{ __('All rights reserved.') }}</p>

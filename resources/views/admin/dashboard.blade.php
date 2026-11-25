@@ -1,10 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <div>
-            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                {{ __('Admin Dashboard') }}
-            </h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ __('An overview of your store at a glance.') }}</p>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+                    {{ __('Admin Dashboard') }}
+                </h2>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ __('An overview of your store at a glance.') }}</p>
+            </div>
+            <a href="{{ route('home') }}"
+               class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                </svg>
+                {{ __('Back to store') }}
+            </a>
         </div>
     </x-slot>
 

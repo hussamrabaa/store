@@ -18,6 +18,14 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('home')">
+                        <span class="inline-flex items-center gap-1.5">
+                            {{ __('View store') }}
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                            </svg>
+                        </span>
+                    </x-nav-link>
                     @if (in_array(Auth::user()->role, ['admin', 'editor'], true))
                         <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
                             {{ __('Products') }}
@@ -91,6 +99,9 @@
         <div class="pt-2 pb-3 space-y-1 px-2">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('home')">
+                {{ __('View store') }}
             </x-responsive-nav-link>
             @if (in_array(Auth::user()->role, ['admin', 'editor'], true))
                 <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
