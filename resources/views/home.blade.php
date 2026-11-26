@@ -290,7 +290,7 @@
                                    class="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-950 dark:hover:shadow-black/40">
                                     <div class="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-slate-800">
                                         @if ($product->image)
-                                            <img src="{{ \Storage::disk('uploads')->url($product->image) }}" alt="{{ $product->name }}"
+                                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                                                  class="h-full w-full object-contain p-4 transition duration-500 group-hover:scale-105">
                                         @else
                                             <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400 dark:from-slate-800 dark:to-slate-700 dark:text-slate-500">

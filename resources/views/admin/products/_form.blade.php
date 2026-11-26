@@ -29,7 +29,7 @@
         <x-input-label for="image" :value="__('Image')" />
         @isset($product)
             @if ($product->image)
-                <img src="{{ \Storage::disk('uploads')->url($product->image) }}" alt="{{ $product->name }}"
+                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                      class="mt-2 h-20 w-20 rounded-xl bg-white object-contain p-1 ring-1 ring-slate-200 dark:bg-slate-950 dark:ring-slate-700">
             @endif
         @endisset

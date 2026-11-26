@@ -52,7 +52,7 @@
                                 <tr class="transition hover:bg-slate-50/70 dark:hover:bg-slate-800/40">
                                     <td class="px-6 py-4">
                                         @if ($product->image)
-                                            <img src="{{ \Storage::disk('uploads')->url($product->image) }}" alt="{{ $product->name }}"
+                                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                                                  class="h-12 w-12 rounded-xl bg-white object-contain p-1 ring-1 ring-slate-200 dark:bg-slate-950 dark:ring-slate-700">
                                         @else
                                             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500">

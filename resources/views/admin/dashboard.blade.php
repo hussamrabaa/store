@@ -82,7 +82,7 @@
                                 <li class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
                                     <div class="flex items-center gap-3">
                                         @if ($product->image)
-                                            <img src="{{ \Storage::disk('uploads')->url($product->image) }}" alt="{{ $product->name }}"
+                                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                                                  class="h-12 w-12 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700">
                                         @else
                                             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500">
