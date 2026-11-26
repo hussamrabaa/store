@@ -96,15 +96,91 @@ export function initBackgroundScene(selector = '#bg-scene') {
     const themeObserver = new MutationObserver(applyTheme);
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-    // Pointer parallax
+    // Parallax input: pointer on desktop, physical device tilt on mobile
     const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
+
+    const isMobile = window.matchMedia('(pointer: coarse)').matches
+        && window.matchMedia('(hover: none)').matches;
+
     const onPointerMove = (event) => {
         pointer.targetX = (event.clientX / window.innerWidth) * 2 - 1;
         pointer.targetY = (event.clientY / window.innerHeight) * 2 - 1;
     };
 
+    // Device orientation (tilt) state — mobile only
+    const tiltRange = 25; // degrees of tilt for full movement
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    let tiltBaseline = null;
+
+    const onDeviceOrientation = (event) => {
+        if (event.beta === null || event.gamma === null) return;
+
+        const angle = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+        let tiltX = event.gamma;
+        let tiltY = event.beta;
+
+        if (angle === 90) {
+            tiltX = event.beta;
+            tiltY = -event.gamma;
+        } else if (angle === 180) {
+            tiltX = -event.gamma;
+            tiltY = -event.beta;
+        } else if (angle === 270 || angle === -90) {
+            tiltX = -event.beta;
+            tiltY = event.gamma;
+        }
+
+        // Treat the phone's starting angle as neutral.
+        if (!tiltBaseline) {
+            tiltBaseline = { x: tiltX, y: tiltY };
+            return;
+        }
+
+        pointer.targetX = clamp((tiltX - tiltBaseline.x) / tiltRange, -1, 1);
+        pointer.targetY = clamp((tiltY - tiltBaseline.y) / tiltRange, -1, 1);
+    };
+
+    let tiltEnabled = false;
+    const enableTilt = () => {
+        if (tiltEnabled) return;
+        tiltEnabled = true;
+        window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true });
+    };
+
+    const resetTiltBaseline = () => {
+        tiltBaseline = null;
+    };
+
+    const requestTiltPermission = () => {
+        window.removeEventListener('touchend', requestTiltPermission);
+        window.removeEventListener('click', requestTiltPermission);
+
+        if (typeof DeviceOrientationEvent !== 'undefined'
+            && typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then((state) => {
+                    if (state === 'granted') enableTilt();
+                })
+                .catch(() => {});
+        } else {
+            enableTilt();
+        }
+    };
+
     if (!prefersReducedMotion) {
-        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        if (isMobile && typeof window.DeviceOrientationEvent !== 'undefined') {
+            // iOS requires a user gesture before orientation events are available.
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                window.addEventListener('touchend', requestTiltPermission, { passive: true });
+                window.addEventListener('click', requestTiltPermission);
+            } else {
+                enableTilt();
+            }
+
+            window.addEventListener('orientationchange', resetTiltBaseline);
+        } else {
+            window.addEventListener('pointermove', onPointerMove, { passive: true });
+        }
     }
 
     const resize = () => {
@@ -173,6 +249,10 @@ export function initBackgroundScene(selector = '#bg-scene') {
             if (frameId) cancelAnimationFrame(frameId);
             document.removeEventListener('visibilitychange', onVisibilityChange);
             window.removeEventListener('pointermove', onPointerMove);
+            window.removeEventListener('deviceorientation', onDeviceOrientation);
+            window.removeEventListener('orientationchange', resetTiltBaseline);
+            window.removeEventListener('touchend', requestTiltPermission);
+            window.removeEventListener('click', requestTiltPermission);
             resizeObserver.disconnect();
             themeObserver.disconnect();
             pointsGeometry.dispose();
