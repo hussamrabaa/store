@@ -30,7 +30,7 @@ class ProductController extends Controller
             'image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        $data['image'] = $request->file('image')->store('products', 'public');
+        $data['image'] = $request->file('image')->store('products', 'uploads');
         $data['user_id'] = $request->user()->id;
 
         Product::create($data);
@@ -56,10 +56,10 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+                Storage::disk('uploads')->delete($product->image);
             }
 
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $data['image'] = $request->file('image')->store('products', 'uploads');
         }
 
         $product->update($data);
@@ -72,7 +72,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+            Storage::disk('uploads')->delete($product->image);
         }
 
         $product->delete();

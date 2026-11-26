@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
             $path = 'products/'.$sample['file'];
 
             if (file_exists($source)) {
-                Storage::disk('public')->put($path, file_get_contents($source));
+                Storage::disk('uploads')->put($path, file_get_contents($source));
 
                 Product::create([
                     'name' => $sample['name'],
