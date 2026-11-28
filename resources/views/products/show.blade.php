@@ -57,7 +57,7 @@
 <body class="font-sans text-slate-700 dark:text-slate-300 antialiased bg-white dark:bg-slate-950">
     <div id="bg-scene" class="pointer-events-none fixed inset-0 z-0" aria-hidden="true"></div>
 
-    <div class="relative z-10 min-h-screen flex flex-col">
+    <div x-data="{}" class="relative z-10 min-h-screen flex flex-col">
         <!-- Announcement -->
         <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-4 py-2 text-center text-xs font-semibold tracking-wide text-white sm:text-sm">
             {{ __('Free shipping on all orders over $50 — 30-day easy returns') }}
@@ -76,12 +76,14 @@
                 </a>
 
                 <div class="hidden items-center gap-1 md:flex">
-                    <a href="{{ route('home') }}#products" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Products') }}</a>
-                    <a href="{{ route('home') }}#services" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Why us') }}</a>
-                    <a href="{{ route('home') }}#contact" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Contact') }}</a>
+                    <a href="{{ route('home') }}" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Home') }}</a>
+                    <a href="{{ route('pages.why-us') }}" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Why us') }}</a>
+                    <a href="{{ route('products.index') }}" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Products') }}</a>
+                    <a href="{{ route('pages.contact') }}" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Contact') }}</a>
                 </div>
 
                 <div class="flex items-center gap-2">
+                    <x-cart-preview />
                     <x-theme-toggle />
                     <x-locale-switcher />
                 </div>
@@ -96,7 +98,7 @@
                         <svg class="h-4 w-4 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
-                        <a href="{{ route('home') }}#products" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('Products') }}</a>
+                        <a href="{{ route('products.index') }}" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('Products') }}</a>
                         <svg class="h-4 w-4 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
@@ -157,7 +159,7 @@
                     </div>
 
                     <!-- Details -->
-                    <div class="animate-fade-up" style="animation-delay: 100ms;" x-data="{ qty: 1, saved: false }">
+                    <div class="animate-fade-up" style="animation-delay: 100ms;" x-data="{ qty: 1, saved: false, added: false }">
                         <div class="lg:sticky lg:top-24 lg:rounded-3xl lg:border lg:border-slate-200 lg:bg-white lg:p-8 lg:shadow-xl lg:shadow-slate-900/5 dark:lg:border-slate-800 dark:lg:bg-slate-900 dark:lg:shadow-black/40">
                             <span class="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-indigo-700 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300">
                                 <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
@@ -229,13 +231,17 @@
                                     </button>
                                 </div>
 
-                                <a :href='"mailto:hello@example.com?subject=" + encodeURIComponent("Order: " + @js($product->name) + " x" + qty)'
-                                   class="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3.5 text-base font-semibold text-white shadow-xl shadow-indigo-600/25 transition hover:-translate-y-0.5 hover:shadow-indigo-600/40">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                <button type="button"
+                                        @click="$store.cart.add({ id: {{ $product->id }}, name: @js($product->name), price: {{ (float) $product->price }}, image: @js($product->image ? asset($product->image) : null) }, qty); added = true; setTimeout(() => added = false, 1600)"
+                                        class="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3.5 text-base font-semibold text-white shadow-xl shadow-indigo-600/25 transition hover:-translate-y-0.5 hover:shadow-indigo-600/40">
+                                    <svg x-show="!added" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                     </svg>
-                                    {{ __('Add to cart') }}
-                                </a>
+                                    <svg x-show="added" x-cloak class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                    </svg>
+                                    <span x-text="added ? @js(__('Added to cart')) : @js(__('Add to cart'))"></span>
+                                </button>
 
                                 <button type="button" @click="saved = !saved"
                                         :class="saved ? 'border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-400' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'"
@@ -331,7 +337,7 @@
                                 <span class="text-sm font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">{{ __('You may also like') }}</span>
                                 <h2 class="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">{{ __('More products') }}</h2>
                             </div>
-                            <a href="{{ route('home') }}#products" class="hidden text-sm font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-400 sm:inline-flex">{{ __('View all') }}</a>
+                            <a href="{{ route('products.index') }}" class="hidden text-sm font-semibold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-400 sm:inline-flex">{{ __('View all') }}</a>
                         </div>
 
                         <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

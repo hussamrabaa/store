@@ -66,15 +66,17 @@
                 </a>
 
                 <div class="hidden items-center gap-1 md:flex">
-                    <a href="#home" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Home') }}</a>
-                    <a href="#services" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Why us') }}</a>
-                    <a href="#products" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Products') }}</a>
-                    <a href="#contact" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Contact') }}</a>
+                    <a href="{{ route('home') }}" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Home') }}</a>
+                    <a href="{{ route('pages.why-us') }}" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Why us') }}</a>
+                    <a href="{{ route('products.index') }}" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Products') }}</a>
+                    <a href="{{ route('pages.contact') }}" class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">{{ __('Contact') }}</a>
                 </div>
 
                 <div class="hidden items-center gap-2 md:flex">
                     <x-theme-toggle />
                     <x-locale-switcher />
+
+                    <x-cart-preview />
 
                     @auth
                         <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition hover:shadow-indigo-600/40 hover:brightness-110">
@@ -96,23 +98,27 @@
                     @endauth
                 </div>
 
-                <button @click="open = !open" class="inline-flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 md:hidden">
-                    <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                    <svg x-show="open" x-cloak class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+                <div class="flex items-center gap-2 md:hidden">
+                    <x-cart-preview />
+                    <button @click="open = !open" class="inline-flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800">
+                        <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                        <svg x-show="open" x-cloak class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </nav>
 
             <!-- Mobile menu -->
             <div x-show="open" x-cloak x-transition class="border-t border-slate-200 bg-white px-4 pb-5 pt-3 dark:border-slate-800 dark:bg-slate-950 md:hidden">
                 <div class="flex flex-col gap-1">
-                    <a href="#home" @click="open = false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">{{ __('Home') }}</a>
-                    <a href="#services" @click="open = false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">{{ __('Why us') }}</a>
-                    <a href="#products" @click="open = false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">{{ __('Products') }}</a>
-                    <a href="#contact" @click="open = false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">{{ __('Contact') }}</a>
+                    <a href="{{ route('home') }}" @click="open = false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">{{ __('Home') }}</a>
+                    <a href="{{ route('pages.why-us') }}" @click="open = false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">{{ __('Why us') }}</a>
+                    <a href="{{ route('products.index') }}" @click="open = false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">{{ __('Products') }}</a>
+                    <a href="{{ route('pages.contact') }}" @click="open = false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">{{ __('Contact') }}</a>
+                    <a href="{{ route('cart.index') }}" @click="open = false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">{{ __('Cart') }}</a>
                 </div>
 
                 <div class="mt-4 flex items-center gap-2">
@@ -156,13 +162,13 @@
                         </p>
 
                         <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                            <a href="#products" class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3.5 text-base font-semibold text-white shadow-xl shadow-indigo-600/25 transition hover:-translate-y-0.5 hover:shadow-indigo-600/40">
+                            <a href="{{ route('products.index') }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3.5 text-base font-semibold text-white shadow-xl shadow-indigo-600/25 transition hover:-translate-y-0.5 hover:shadow-indigo-600/40">
                                 {{ __('Shop the collection') }}
                                 <svg class="h-5 w-5 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                                 </svg>
                             </a>
-                            <a href="#services" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3.5 text-base font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800">
+                            <a href="{{ route('pages.why-us') }}" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3.5 text-base font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800">
                                 {{ __('Why choose us') }}
                             </a>
                         </div>
@@ -268,9 +274,17 @@
                             <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl">{{ __('Featured products') }}</h2>
                             <p class="mt-3 max-w-xl text-lg text-slate-600 dark:text-slate-400">{{ __('Handpicked favorites from our latest drop.') }}</p>
                         </div>
-                        <span class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                            {{ $products->count() }} {{ __('items') }}
-                        </span>
+                        <div class="flex items-center gap-3">
+                            <span class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                                {{ $products->count() }} {{ __('items') }}
+                            </span>
+                            <a href="{{ route('products.index') }}" class="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:shadow-indigo-600/40 hover:brightness-110">
+                                {{ __('View all') }}
+                                <svg class="h-4 w-4 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
                     </div>
 
                     @if ($products->isEmpty())
@@ -340,7 +354,7 @@
                                     </svg>
                                     {{ __('Email us') }}
                                 </a>
-                                <a href="#products" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3.5 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20">
+                                <a href="{{ route('products.index') }}" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3.5 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20">
                                     {{ __('Browse products') }}
                                 </a>
                             </div>
@@ -370,15 +384,16 @@
                         <div>
                             <h4 class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('Shop') }}</h4>
                             <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                                <li><a href="#products" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('All products') }}</a></li>
-                                <li><a href="#services" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('Why us') }}</a></li>
+                                <li><a href="{{ route('products.index') }}" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('All products') }}</a></li>
+                                <li><a href="{{ route('pages.why-us') }}" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('Why us') }}</a></li>
+                                <li><a href="{{ route('cart.index') }}" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('Cart') }}</a></li>
                             </ul>
                         </div>
                         <div>
                             <h4 class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('Company') }}</h4>
                             <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                                <li><a href="#about" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('About') }}</a></li>
-                                <li><a href="#contact" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('Contact') }}</a></li>
+                                <li><a href="{{ route('pages.why-us') }}" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('About') }}</a></li>
+                                <li><a href="{{ route('pages.contact') }}" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('Contact') }}</a></li>
                             </ul>
                         </div>
                         <div>

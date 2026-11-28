@@ -19,7 +19,7 @@
 
     <div class="py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 {{ isset($stats['orders']) ? 'lg:grid-cols-4' : 'lg:grid-cols-3' }}">
                 <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                     <div class="flex items-center justify-between">
                         <p class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Products') }}</p>
@@ -55,6 +55,21 @@
                     </div>
                     <p class="mt-4 text-3xl font-extrabold text-slate-900 dark:text-white">{{ $stats['admins'] }}</p>
                 </div>
+
+                @if (isset($stats['orders']))
+                    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">{{ __('Orders') }}</p>
+                            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600 dark:bg-sky-500/15 dark:text-sky-400">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2.25 5.25H6.75A2.25 2.25 0 014.5 19V5.25A2.25 2.25 0 016.75 3h7.5l4.5 4.5v11.25A2.25 2.25 0 0116.5 21z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <p class="mt-4 text-3xl font-extrabold text-slate-900 dark:text-white">{{ $stats['orders'] }}</p>
+                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ $stats['pending_orders'] }} {{ __('Pending') }}</p>
+                    </div>
+                @endif
             </div>
 
             <div class="rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
